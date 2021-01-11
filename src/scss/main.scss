@@ -1,3 +1,10 @@
 body {
-  background-color: blue;
+  background-color: pink;
+}
+
+$primary-color: white;
+$bg: black;
+h1 {
+  color: $primary-color;
+  background-color: $bg;
 }

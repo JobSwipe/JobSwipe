@@ -1,24 +1,44 @@
 {
-  "name": "jobswipe",
+  "name": "job-swipe",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "parcel src/index.html",
-    "build": "parcel build src/index.html"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/lijiaxingogo/JobSwipe.git"
-  },
+  "main": "./src/main.js",
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lijiaxingogo/JobSwipe/issues"
+  "scripts": {
+    "clean": "rm dist/bundle.js",
+    "build-dev": "webpack --mode development",
+    "build-prod": "webpack --mode production",
+    "start": "webpack serve --hot --mode development & nodemon server/server.js"
   },
-  "homepage": "https://github.com/lijiaxingogo/JobSwipe#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-hot-loader": "^4.13.0",
+    "require": "^2.4.20"
+  },
   "devDependencies": {
-    "parcel-bundler": "^1.12.4",
-    "sass": "^1.32.2"
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "@hot-loader/react-dom": "^17.0.1+4.13.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.0.1",
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "html-webpack-plugin": "^4.5.1",
+    "node-sass": "^5.0.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "sass-loader": "^10.1.1",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.12.3",
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^3.11.1"
   }
 }

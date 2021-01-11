@@ -1,1 +1,7 @@
-import './../scss/main.scss';
+import React from "react";
+import "./../scss/main.scss";
+import ReactDOM from "react-dom";
+import App from "./App";
+
+var mountNode = document.getElementById("app");
+ReactDOM.render(<App name="Jane" />, mountNode);
