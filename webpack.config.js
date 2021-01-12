@@ -1,102 +1,53 @@
-const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const config = {
-  entry: [
-    './src/js/main.js'
-  ],
+module.exports = {
+  mode: process.env.NODE_ENV,
+  entry: './client/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js'
+    path: path.resolve(__dirname, 'build'),
+    filename: 'bundle.js',
+  },
+  devServer: {
+    // does not hit the backend...
+    // host: 'localhost',
+    port: 8080,
+    // compress: true,
+    // contentBase: 'path.resolve(__dirname, 'build')',
+    //contentBase: './public',
+    // match the output 'publicPath' where to build it in a normal scenario
+    publicPath: '/build',
+    hot: true,
+    proxy: {
+      '/': 'http://localhost:3333/',
+    },
   },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/
+        test: /\.jsx?/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
+        },
       },
       {
-        test: /\.css$/,
+        test: /\.s[ac]ss$/i,
         use: [
+          // Creates `style` nodes from JS strings
           'style-loader',
-          'css-loader'
-        ],
-        exclude: /\.module\.css$/
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1,
-              modules: true
-            }
-          }
-        ],
-        include: /\.module\.css$/
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
+          // Translates CSS into CommonJS
           'css-loader',
-          'sass-loader'
-        ]
+          // Compiles Sass to CSS
+          'sass-loader',
+        ],
       },
       {
-        test: /\.png$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              mimetype: 'image/png'
-            }
-          }
-        ]
-      }
-    ]
-  },
-  resolve: {
-    extensions: [
-      '.js',
-      '.jsx'
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
-    alias: {
-      'react-dom': '@hot-loader/react-dom'
-    }
   },
-  devServer: {
-    contentBase: './dist'
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      appMountId: 'app',
-      filename: 'index.html'
-    })
-  ],
-  optimization: {
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        }
-      }
-    }
-  }
-};
-
-module.exports = (env, argv) => {
-  if (argv.hot) {
-    // Cannot use 'contenthash' when hot reloading is enabled.
-    config.output.filename = '[name].[hash].js';
-  }
-
-  return config;
 };
