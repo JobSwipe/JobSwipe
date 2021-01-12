@@ -1,10 +1,9 @@
-import './scss/main.scss';
 import React from 'react';
 import { render } from 'react-dom';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import App from './App.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-
+import './style.css';
 const colors = {
   brand: {
     900: '#1a365d',
@@ -16,9 +15,7 @@ const colors = {
 const theme = extendTheme({ colors });
 render(
   <Router>
-    <ChakraProvider theme={theme}>
-      <App />
-    </ChakraProvider>
+    <App />
   </Router>,
   document.getElementById('root')
 );
