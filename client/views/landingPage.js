@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/userContext.js';
 import { Route, Redirect } from 'react-router-dom';
-// import axios
+import axios from 'axios';
 import {
   Image,
   Box,
@@ -36,25 +36,30 @@ import { FaUserNinja } from 'react-icons/fa';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Icon } from '@chakra-ui/react';
 export default function landingPage(props) {
+  const toast = useToast();
   const defaultState = {
     auth: true,
     user: {},
   };
   const [state, setState] = useState(defaultState);
+  const [jobs, setJobs] = useState([]);
   const { user, setUser } = useContext(UserContext);
+
   // console.log('what is props', props);
   // setCookies
   console.log(user.name);
+
   // useEffect(() => {
   //   const fetchData = async () => {
   //     const result = await axios("http://localhost:333/jobs/?????");
   //     console.log(result);
-  //     setQuestions(result.data);
+  //     setJobs(result.data);
   //   };
 
   //   fetchData();
   // }, []);
-  return state.auth ? (
+  console.log('whats logged in', user.loggedIn);
+  return user.loggedIn ? (
     <Box
       bg="tomato"
       w="100%"
@@ -80,15 +85,31 @@ export default function landingPage(props) {
             user
           </MenuButton>
           <MenuList>
-            <MenuItem color="tomato">
+            <MenuItem
+              color="tomato"
+              onClick={() => {
+                props.history.push(`/savedJobs`);
+              }}
+            >
               <Text fontWeight="bold">Saved Jobs</Text>
             </MenuItem>
             <MenuItem color="tomato">
               <Text fontWeight="bold">Applied Jobs</Text>
             </MenuItem>
 
-            <MenuItem color="tomato">
-              {' '}
+            <MenuItem
+              color="tomato"
+              onClick={() => {
+                setUser({});
+                toast({
+                  title: 'Logged out!',
+                  description: `You have logged out of your account.`,
+                  status: 'success',
+                  duration: 5000,
+                  isClosable: true,
+                });
+              }}
+            >
               <Text fontWeight="bold">Log Out</Text>
             </MenuItem>
           </MenuList>
