@@ -19,9 +19,19 @@ import {
   InputRightElement,
   HStack,
   Spacer,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
 } from '@chakra-ui/react';
 import { FaUserNinja } from 'react-icons/fa';
-
+import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Icon } from '@chakra-ui/react';
 export default function landingPage(props) {
   const defaultState = {
@@ -46,10 +56,30 @@ export default function landingPage(props) {
       </Center>
 
       <Box style={{ position: 'absolute', top: '30px', right: '10px' }}>
-        <Button colorScheme="teal">
-          <Icon as={FaUserNinja} w={10} h={10} />
-          user
-        </Button>
+        <Menu>
+          <MenuButton
+            as={Button}
+            colorScheme="teal"
+            rightIcon={<ChevronDownIcon />}
+          >
+            {' '}
+            <Icon as={FaUserNinja} w={10} h={10} />
+            user
+          </MenuButton>
+          <MenuList>
+            <MenuItem color="tomato">
+              <Text fontWeight="bold">Saved Jobs</Text>
+            </MenuItem>
+            <MenuItem color="tomato">
+              <Text fontWeight="bold">Applied Jobs</Text>
+            </MenuItem>
+
+            <MenuItem color="tomato">
+              {' '}
+              <Text fontWeight="bold">Log Out</Text>
+            </MenuItem>
+          </MenuList>
+        </Menu>
       </Box>
       <Container maxW="max" maxH="max">
         <Center pt="20px" pb="40px">

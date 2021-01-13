@@ -5,9 +5,6 @@ import savedJobs from './views/savedJobs.js';
 import { Button } from '@chakra-ui/react';
 import landingPage from './views/landingPage.js';
 function App() {
-  // put user info
-  //
-
   // check if cookies exists: if exist, update the auth to true
 
   return (
@@ -35,7 +32,7 @@ function App() {
           We are poor and young software engineers who have passion to help
           other engineers grow and find a job. Show some love by:
         </p>
-        <Button>Donate Us ❤️</Button>
+        <Button size="xs">Donate Us ❤️</Button>
       </div>
     </Suspense>
   );
