@@ -13,12 +13,13 @@ const jobsController = {};
 
 // request all jobs for a particular user that weren't seen
 jobsController.getAllJobs = (req, res, next) => {
-  const { _id } = req.params;
-  const getJobs = 'SELECT * FROM jobs ';
-  db.query(getJobs, [_id], (err, data) => {
+  const { id } = req.params;
+  const getJobs =
+    'SELECT * FROM jobs WHERE NOT EXISTS (SELECT 1 FROM choices WHERE jobs.job_id = choices.job_id AND choices.user_id =$1)';
+  db.query(getJobs, [id], (err, data) => {
     if (err) next(err);
     else {
-      console.log('data.rows', data.rows);
+      console.log('data.rows', data.rows.length);
       res.locals.allUnseenJobs = removeDuplicates(data.rows);
       return next();
     }
@@ -26,22 +27,23 @@ jobsController.getAllJobs = (req, res, next) => {
 };
 // add a job to the choices table as YES or NO
 jobsController.addJob = (req, res, next) => {
-  const { _id, status, job_id } = req.body;
-
+  const { user_id, status, job_id } = req.body;
+  console.log(user_id, status, job_id);
   const insertJob =
     'INSERT INTO choices (status, job_id, user_id) VALUES ($1, $2, $3)';
-  db.query(insertJob, [status, job_id, _id], (err, data) => {
+  db.query(insertJob, [status, job_id, user_id], (err, data) => {
     if (err) next(err);
     else return next();
   });
 };
 // request all jobs that have a YES status for a specific user
 jobsController.getAcceptedJobs = (req, res, next) => {
-  const { _id } = req.params;
-
+  const { id } = req.params;
+  console.log('id', id);
+  console.log('Im here');
   const getAccepted =
-    'SELECT * FROM jobs INNER JOIN choices ON jobs.job_id = choices.job_id WHERE choices.user_id = $1 AND choices.status = "Y"';
-  db.query(getAccepted, [_id], (err, data) => {
+    "SELECT * FROM jobs INNER JOIN choices ON jobs.job_id = choices.job_id WHERE choices.user_id = $1 AND choices.status = 'Y'";
+  db.query(getAccepted, [id], (err, data) => {
     if (err) next(err);
     else {
       console.log('data.rows', data.rows);
