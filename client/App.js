@@ -4,19 +4,26 @@ import LoginPage from './views/login.js';
 import savedJobs from './views/savedJobs.js';
 import { Button } from '@chakra-ui/react';
 import landingPage from './views/landingPage.js';
+import { UserContext } from './context/userContext.js';
 function App() {
   // check if cookies exists: if exist, update the auth to true
-
+  const [user, setUser] = useState({
+    _id: 1,
+    name: 'Jiaxin',
+    loggedIn: true,
+  });
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div>
-        <Switch>
-          <Route exact path="/" component={landingPage} />
+        <UserContext.Provider value={{ user, setUser }}>
+          <Switch>
+            <Route exact path="/" component={landingPage} />
 
-          <Route path="/login" component={LoginPage} />
+            <Route path="/login" component={LoginPage} />
 
-          <Route exact path="/savedJobs" component={savedJobs} />
-        </Switch>
+            <Route path="/savedJobs" component={savedJobs} />
+          </Switch>
+        </UserContext.Provider>
       </div>
       <div
         style={{
