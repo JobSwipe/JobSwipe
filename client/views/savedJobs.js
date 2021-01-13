@@ -1,4 +1,5 @@
-import React, { useState, useEffct } from 'react';
+import React, { useState, useEffct, useContext } from 'react';
+import { UserContext } from '../context/userContext.js';
 import {
   Image,
   Box,
@@ -38,6 +39,7 @@ import { FaUserNinja } from 'react-icons/fa';
 import { Icon } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 export default function savedJobs() {
+  const { user, setUser } = useContext(UserContext);
   const [savedJobs, setSavedJobs] = useState([
     {
       Position: 'software engineer',

@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../context/userContext.js';
 import { Route, Redirect } from 'react-router-dom';
+// import axios
 import {
   Image,
   Box,
@@ -39,8 +41,19 @@ export default function landingPage(props) {
     user: {},
   };
   const [state, setState] = useState(defaultState);
+  const { user, setUser } = useContext(UserContext);
   // console.log('what is props', props);
   // setCookies
+  console.log(user.name);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await axios("http://localhost:333/jobs/?????");
+  //     console.log(result);
+  //     setQuestions(result.data);
+  //   };
+
+  //   fetchData();
+  // }, []);
   return state.auth ? (
     <Box
       bg="tomato"
@@ -51,7 +64,7 @@ export default function landingPage(props) {
     >
       <Center>
         <Heading as="h1" size="4xl" pt={4}>
-          Swipe a Job?
+          Hi {user.name}, Swipe a Job?
         </Heading>
       </Center>
 
