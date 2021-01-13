@@ -12,17 +12,21 @@ function removeDuplicates(array) {
 const jobsController = {};
 
 // request all jobs for a particular user that weren't seen
-jobsController.getAllJobs = (req, res, next) => {
-  const { _id } = req.params;
+jobsController.getAllJobs = async (req, res, next) => {
+  console.log('im in the getAllJobsController');
+  console.log('what is req.body', req.body);
+  const { _id } = req.body;
+  console.log('iddd', _id);
   const getJobs = 'SELECT * FROM jobs ';
-  db.query(getJobs, [_id], (err, data) => {
-    if (err) next(err);
-    else {
-      console.log('data.rows', data.rows);
-      res.locals.allUnseenJobs = removeDuplicates(data.rows);
-      return next();
-    }
-  });
+  try {
+    const { rows } = await db.query(getJobs, [_id]);
+    console.log('data.rows', rows);
+    res.locals.allUnseenJobs = removeDuplicates(rows);
+    return next();
+  } catch (err) {
+    console.log('whats err', err);
+    next(err);
+  }
 };
 // add a job to the choices table as YES or NO
 jobsController.addJob = (req, res, next) => {

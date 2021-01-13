@@ -38,7 +38,7 @@ import {
 import { FaUserNinja } from 'react-icons/fa';
 import { Icon } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-export default function savedJobs() {
+export default function savedJobs(props) {
   const toast = useToast();
   const { user, setUser } = useContext(UserContext);
 
@@ -183,6 +183,16 @@ export default function savedJobs() {
             colorScheme="teal"
             borderColor="green.500"
             color="white"
+            onClick={() => {
+              props.history.push('/');
+              toast({
+                title: 'Keep Swiping!',
+                description: `Because you did not come this far just to come this far`,
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+              });
+            }}
           >
             Go Swipe
           </Button>{' '}

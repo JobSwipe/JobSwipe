@@ -51,7 +51,7 @@ export default function landingPage(props) {
 
   // useEffect(() => {
   //   const fetchData = async () => {
-  //     const result = await axios("http://localhost:333/jobs/?????");
+  //     const result = await axios("http://localhost:3333/jobs/?",body);
   //     console.log(result);
   //     setJobs(result.data);
   //   };
