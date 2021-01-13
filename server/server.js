@@ -7,53 +7,59 @@ const app = express();
 const PORT = 3333;
 
 // const userRouter = require('./routes/user');
+const jobsRouter = require('./routes/jobs');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-try {
-  fetch(
-    'https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=1bb52756&app_key=1969ba3ac22c55e77c02d9563d19110e&what=javascript&where=19020&distance=50'
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      data.results.forEach((job) => {
-        let exist = false;
-        // make a query for that specific jsonId if it does not exist
-        db.query(
-          'SELECT * FROM jobs WHERE jsonid = $1',
-          [job.id],
-          (err, response) => {
-            if (err) console.log(err);
-            else if (response.rows.length) exist = true;
-          }
-        );
-        // add the job to the table
-        console.log('exist', exist);
-        if (!exist) {
-          const addJob = `INSERT INTO jobs (title, description, url, jsonid, location, salary)
-          VALUES ($1, $2, $3, $4, $5, $6) RETURNING job_id`;
-          const values = [
-            job.title,
-            job.description,
-            job.redirect_url,
-            job.id,
-            job.location.display_name,
-            job.salary_is_predicted,
-          ];
-          db.query(addJob, values, (err, response) => {
-            if (err) console.log(err);
-            else {
-              console.log('response.rows', response.rows);
+async function populateDb() {
+  try {
+    await fetch(
+      'https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=1bb52756&app_key=1969ba3ac22c55e77c02d9563d19110e&what=javascript&where=19020&distance=50'
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        data.results.forEach((job) => {
+          let exist = false;
+          // make a query for that specific jsonId if it does not exist
+          db.query(
+            'SELECT * FROM jobs WHERE jsonid = $1',
+            [job.id],
+            (err, response) => {
+              if (err) console.log(err);
+              else if (response.rows.length) exist = true;
             }
-          });
-        }
+          );
+          // add the job to the table
+          console.log('exist', exist);
+          if (!exist) {
+            const addJob = `INSERT INTO jobs (title, description, url, jsonid, location, salary)
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING job_id`;
+            const values = [
+              job.title,
+              job.description,
+              job.redirect_url,
+              job.id,
+              job.location.display_name,
+              job.salary_is_predicted,
+            ];
+            db.query(addJob, values, (err, response) => {
+              if (err) console.log(err);
+              else {
+                console.log('response.rows', response.rows);
+              }
+            });
+          }
+        });
       });
-    });
-} catch (error) {
-  console.log('error', error);
+  } catch (error) {
+    console.log('error', error);
+  }
 }
+
+// populateDb();
+
 //* GET JOBS FROM API
+app.use('/jobs', jobsRouter);
 // app.use('/user', userRouter); // login in (save the users)//auth(res.cookies with jwt)//logout
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
