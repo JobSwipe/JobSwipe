@@ -12,12 +12,12 @@ router.get('/retrieveSavedJobs', jobsController.getAcceptedJobs, (req, res) => {
 // UNSEEN JOBS
 router.get('/retrieveAllUnseenJobs', jobsController.getAllJobs, (req, res) => {
   console.log('finished');
-  res.status(200).json();
+  res.status(200).json({ allJobs: res.locals.allUnseenJobs });
 });
 // SAVE JOB
-router.post('/', jobsController.addJob, (req, res) => {
-  console.log();
-  res.status(200).json(res.locals.results);
+router.post('/addSavedJob', jobsController.addJob, (req, res) => {
+  console.log('added');
+  res.status(200).json('Job added');
 });
 
 module.exports = router;

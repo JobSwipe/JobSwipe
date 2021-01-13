@@ -12,9 +12,9 @@ function removeDuplicates(array) {
 const jobsController = {};
 
 // request all jobs for a particular user that weren't seen
-jobsController.getAllJobs((req, res, next) => {
+jobsController.getAllJobs = (req, res, next) => {
   const { _id } = req.params;
-  const getJobs = '';
+  const getJobs = 'SELECT * FROM jobs ';
   db.query(getJobs, [_id], (err, data) => {
     if (err) next(err);
     else {
@@ -23,9 +23,9 @@ jobsController.getAllJobs((req, res, next) => {
       return next();
     }
   });
-});
+};
 // add a job to the choices table as YES or NO
-jobsController.addJob((req, res, next) => {
+jobsController.addJob = (req, res, next) => {
   const { _id, status, job_id } = req.body;
 
   const insertJob =
@@ -34,9 +34,9 @@ jobsController.addJob((req, res, next) => {
     if (err) next(err);
     else return next();
   });
-});
+};
 // request all jobs that have a YES status for a specific user
-jobsController.getAcceptedJobs((req, res, next) => {
+jobsController.getAcceptedJobs = (req, res, next) => {
   const { _id } = req.params;
 
   const getAccepted =
@@ -49,6 +49,6 @@ jobsController.getAcceptedJobs((req, res, next) => {
       return next();
     }
   });
-});
+};
 // SELECT * FROM jobs INNER JOIN choices ON jobs.job_id = choices.job_id WHERE choices.user_id = 2 AND choices.status = 'Y'
 module.exports = jobsController;

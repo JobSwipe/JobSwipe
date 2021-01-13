@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import App from './App.js';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { CookiesProvider } from 'react-cookie';
 import './style.css';
 const colors = {
   brand: {
@@ -15,7 +16,11 @@ const colors = {
 const theme = extendTheme({ colors });
 render(
   <Router>
-    <App />
+    <CookiesProvider>
+      <ChakraProvider theme={theme}>
+        <App />
+      </ChakraProvider>
+    </CookiesProvider>
   </Router>,
   document.getElementById('root')
 );
