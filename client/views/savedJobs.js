@@ -154,7 +154,7 @@ export default function savedJobs() {
     <Box
       bg="tomato"
       w="100%"
-      h="1120px"
+      h="100%"
       p={4}
       color="white"
       style={{ position: 'relative' }}
