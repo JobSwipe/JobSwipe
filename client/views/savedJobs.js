@@ -73,7 +73,7 @@ export default function savedJobs(props) {
       <WrapItem>
         <Container
           w="320px"
-          h="320px"
+          h="100%"
           bg="red.200"
           rounded="md"
           boxShadow="dark-lg"
@@ -86,12 +86,18 @@ export default function savedJobs(props) {
             <Box w="100%" pt="20px">
               Position: {Position}
             </Box>
-            <Box w="100%">Description: {Description}</Box>
+
+            <Box
+              w="100%"
+              dangerouslySetInnerHTML={{
+                __html: `Description: ${Description}`,
+              }}
+            ></Box>
             <Box w="100%">Location: {Location}</Box>
             <Box w="100%" pb="20px">
               Link:{" "}
               <Link color="teal.700" href={LK}>
-                {LK}
+                <Text>Apply Now</Text>
               </Link>
             </Box>
           </VStack>
@@ -118,7 +124,7 @@ export default function savedJobs(props) {
       w="100%"
       h="100%"
       p={4}
-      color="white"
+      color="black"
       style={{ position: "relative" }}
     >
       <Center>

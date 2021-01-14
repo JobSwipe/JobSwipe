@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../context/userContext.js";
 import { Route, Redirect } from "react-router-dom";
 import TinderCard from "react-tinder-card";
 import axios from "axios";
@@ -7,7 +6,6 @@ import {
   Image,
   Box,
   Heading,
-  Link,
   Flex,
   Text,
   Button,
@@ -33,10 +31,14 @@ import {
   MenuIcon,
   MenuCommand,
   MenuDivider,
+  Icon,
+  Link,
 } from "@chakra-ui/react";
 import { FaUserNinja } from "react-icons/fa";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { Icon } from "@chakra-ui/react";
+
+import { UserContext } from "../context/userContext.js";
+
 export default function landingPage(props) {
   const toast = useToast();
   const defaultState = {
@@ -50,12 +52,12 @@ export default function landingPage(props) {
   // console.log('what is props', props);
   // setCookies
   console.log(user.name);
-
+  console.log(user._id);
   useEffect(() => {
     const fetchData = async () => {
       console.log("fetcheing.................");
       const result = await axios(
-        `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` //_id:1
+        `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` // _id:2
       );
       console.log(result.data.allJobs, "this is the result from jobs");
 
@@ -64,21 +66,51 @@ export default function landingPage(props) {
 
     fetchData();
   }, []);
-  console.log("whats logged in", jobs[0]); // error: undefined
-  // update state for jobs after swipe
-  const swipe = () => {
-    //jobs.shift();
-    console.log("what shift away", jobs.shift());
-    setJobs([...jobs]);
-  };
-  // save to choice table
-  const saveToChoice = (userId, status, job_id) => {
-    axios.post("http://localhost:3333/jobs/addSavedJob", {
-      user_id: userId,
-      status: status,
-      job_id: job_id,
-    });
-  };
+  // console.log("whats logged in", jobs[0]); // error: undefined
+  // // update state for jobs after swipe
+  // const swipe = () => {
+  //   //jobs.shift();
+  //   console.log("what shift away", jobs.shift());
+  //   setJobs([...jobs]);
+  // };
+  // // save to choice table
+  // const saveToChoice = (userId, status, job_id) => {
+  //   axios.post("http://localhost:3333/jobs/addSavedJob", {
+  //     user_id: userId,
+  //     status: status,
+  //     job_id: job_id,
+  //   });
+  // };
+
+  console.log("whats logged in", user.loggedIn);
+
+  function swipe(e) {
+    e.preventDefault();
+    console.log("clicked on", e.target.id); // YES or NO
+
+    // request to add job as YES/NO status
+    const fetchAddJob = async () => {
+      const result = await axios({
+        url: `http://localhost:3333/jobs/addSavedJob`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          user_id: user._id,
+          status: e.target.id,
+          job_id: jobs[0].job_id,
+        },
+      });
+    };
+
+    fetchAddJob();
+    const job = jobs.shift();
+    const newJobs = jobs.map((nextJob) => nextJob);
+    console.log("length", jobs.length);
+    setJobs(newJobs);
+    console.log("job swiped", job);
+  }
   return user.loggedIn ? (
     <Box
       bg="tomato"
@@ -137,7 +169,8 @@ export default function landingPage(props) {
       </Box>
       <Container maxW="max" maxH="max">
         <Center pt="20px" pb="40px">
-          {/*<Heading>Software enginner</Heading>
+          {/* <Heading>Software enginner</Heading>
+
             <Text>J.P. Morgan</Text>
             <Text>
               Description: As an experienced Java Development Lead or Software
@@ -168,13 +201,13 @@ export default function landingPage(props) {
               to speaking with you soon!
             </Text>
             */}
+          {console.log("spoon", jobs[1])}
 
-          {console.log("spoon", jobs[12])}
-          {console.log("hahahah")}
-          {
-            jobs.map((job) => {
+          {jobs.map((job, i) => {
+            if (i === 0)
               return (
                 <Flex
+                  key={`key${i}`}
                   direction="column"
                   align="center"
                   bg="white"
@@ -183,22 +216,23 @@ export default function landingPage(props) {
                   borderRadius="8px"
                   padding="30px"
                   marginTop="100px"
-                  minHeight="350px"
                 >
                   <Heading>{job.title}</Heading>
-                  <Text as="mark">Salary:{job.salary}</Text>
-                  <Text>{job.description}</Text>
-                  <Link color="teal.700" href={job.url}>
-                    Apply here!
+                  <Text as="mark">Salary: {job.salary}</Text>
+                  <Text
+                    dangerouslySetInnerHTML={{ __html: `${job.description}` }}
+                  />
+                  <Link color="teal.500" href={job.url} isExternal="true">
+                    Click here to get more information...
                   </Link>
                 </Flex>
               );
-            })[0]
-          }
+          })}
         </Center>
         <Center pb="60px">
           <HStack spacing="50px">
             <Button
+              id="N"
               variant="solid"
               size="lg"
               style={{
@@ -213,10 +247,12 @@ export default function landingPage(props) {
                 console.log(jobs);
                 swipe();
               }}
+              onClick={swipe}
             >
               ❌
             </Button>{" "}
             <Button
+              id="Y"
               variant="solid"
               size="lg"
               style={{
@@ -236,6 +272,7 @@ export default function landingPage(props) {
                 );
                 swipe();
               }}
+              onClick={swipe}
             >
               ✔️
             </Button>

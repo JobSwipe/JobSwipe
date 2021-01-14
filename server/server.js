@@ -20,7 +20,7 @@ async function populateDb() {
       .then((data) => {
         data.results.forEach((job) => {
           const addJob = `INSERT INTO jobs (title, description, url, jsonid, location, salary)
-          VALUES ($1, $2, $3, $4, $5, $6) RETURNING job_id`;
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING job_id`;
           const values = [
             job.title,
             job.description,

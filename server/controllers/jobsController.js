@@ -30,7 +30,8 @@ jobsController.getAllJobs = (req, res, next) => {
 jobsController.addJob = (req, res, next) => {
   console.log("hiiiii im in add jobsssss");
   const { user_id, status, job_id } = req.body;
-  console.log("this is req body", user_id, status, job_id);
+  console.log("user_id", user_id);
+  console.log(user_id, status, job_id);
   const insertJob =
     "INSERT INTO choices (status, job_id, user_id) VALUES ($1, $2, $3)";
   db.query(insertJob, [status, job_id, user_id], (err, data) => {
@@ -57,4 +58,5 @@ jobsController.getAcceptedJobs = (req, res, next) => {
   });
 };
 // SELECT * FROM jobs INNER JOIN choices ON jobs.job_id = choices.job_id WHERE choices.user_id = 2 AND choices.status = 'Y'
+
 module.exports = jobsController;

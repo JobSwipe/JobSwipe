@@ -8,7 +8,7 @@ import { UserContext } from "./context/userContext.js";
 function App() {
   // check if cookies exists: if exist, update the auth to true
   const [user, setUser] = useState({
-    _id: 2,
+    _id: 3,
     name: "Jiaxin",
     loggedIn: true,
   });
