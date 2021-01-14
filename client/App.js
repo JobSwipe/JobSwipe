@@ -8,11 +8,25 @@ import { UserContext } from "./context/userContext.js";
 function App() {
   // check if cookies exists: if exist, update the auth to true
   const [user, setUser] = useState({
-    _id: 3,
-    name: "Jiaxin",
-    loggedIn: true,
+    _id: 0,
+    name: "",
+    loggedIn: false,
   });
-  //'/signin'
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("fetching.................");
+      const result = await axios(
+        `http://localhost:3333/auth/google/redirect` // _id:2
+      );
+      console.log(result.data, "this is the result from auth/google/redirect");
+
+      setUser(result.data);
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div>
@@ -37,10 +51,10 @@ function App() {
         }}
       >
         <p>
-          We are poor and young software engineers who have passion to help
+          We are poor and young software engineers who are passionate to help
           other engineers grow and find a job. Show some love by:
         </p>
-        <Button size="xs">Donate Us ❤️</Button>
+        <Button size="xs">Donate ❤️</Button>
       </div>
     </Suspense>
   );

@@ -1,16 +1,51 @@
 const express = require("express");
 const path = require("path");
+const authRoutes = require('./routes/auth-routes');
+const profileRoutes = require('./routes/profile-routes');
+const passport = require('passport');
+const passportSetup = require("../config/passport-setup");
+const keys = require('../config/keys');
+const bodyParser = require("body-parser");
+const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
 const fetch = require("node-fetch");
 const db = require("./dbModels.js");
 const cors = require("cors");
 const app = express();
 const PORT = 3333;
 
-// const userRouter = require('./routes/user');
+// handle parsing request body and cookies
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+const userRouter = require('./routes/user');
 const jobsRouter = require("./routes/jobs");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+
+// use cookieSeession to make sessions
+// encrypts cookie and makes sure it lives just a day long
+app.use(cookieSession({
+  // one day in milliseconds
+  maxAge: 24 * 60 * 60 * 1000,
+  // hide the secret key in the keys file
+  keys: [keys.session.cookieKey]
+}));
+
+
+// we want passport to initialize and then use cookies
+// this has to be run early on here in app
+app.use(passport.initialize());
+app.use(passport.session());
+
+// use auth-routes at /auth
+app.use('/auth', authRoutes);
+
+// use profile routes
+app.use('/profile', profileRoutes);
+
 async function populateDb() {
   try {
     await fetch(
