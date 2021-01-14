@@ -1,8 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable node/no-unsupported-features/es-syntax */
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React, { useState, useEffect, useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import TinderCard from 'react-tinder-card';
@@ -58,7 +53,6 @@ export default function landingPage(props) {
   // setCookies
   console.log(user.name);
   console.log(user._id);
-
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
@@ -70,6 +64,7 @@ export default function landingPage(props) {
 
     fetchData();
   }, []);
+
   console.log('whats logged in', user.loggedIn);
 
   function swipe(e) {
@@ -77,7 +72,7 @@ export default function landingPage(props) {
     console.log('clicked on', e.target.id); // YES or NO
 
     // request to add job as YES/NO status
-    const fetchData = async () => {
+    const fetchAddJob = async () => {
       const result = await axios({
         url: `http://localhost:3333/jobs/addSavedJob`,
         method: 'POST',
@@ -92,7 +87,7 @@ export default function landingPage(props) {
       });
     };
 
-    fetchData();
+    fetchAddJob();
     const job = jobs.shift();
     const newJobs = jobs.map((nextJob) => nextJob);
     console.log('length', jobs.length);
