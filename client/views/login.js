@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import {
   Image,
   Box,
@@ -24,6 +25,7 @@ import { Icon } from '@chakra-ui/react';
 
 export default function LoginPage() {
   return (
+    
     <Box bg="tomato" w="100%" p={4} color="white">
       <Center>
         <Heading as="h1" size="4xl" pt={4}>
@@ -57,6 +59,8 @@ export default function LoginPage() {
               <Button>
                 <Icon as={FaGithubSquare} w={6} h={6} />
                 Github
+              </Button>
+            <Button> <a href= "http://localhost:3333/auth/google">OAuth</a>
               </Button>
             </HStack>
           </Flex>

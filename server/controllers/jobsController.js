@@ -19,7 +19,7 @@ jobsController.getAllJobs = (req, res, next) => {
   db.query(getJobs, [id], (err, data) => {
     if (err) next(err);
     else {
-      console.log('data.rows', data.rows.length);
+      console.log('data.rows in getAllJobs', data.rows.length);
       res.locals.allUnseenJobs = removeDuplicates(data.rows);
       console.log('allUnseenJobs', res.locals.allUnseenJobs.length);
       return next();
@@ -40,14 +40,14 @@ jobsController.addJob = (req, res, next) => {
 // request all jobs that have a YES status for a specific user
 jobsController.getAcceptedJobs = (req, res, next) => {
   const { id } = req.params;
-  console.log('id', id);
-  console.log('Im here');
+  console.log('id in getAcceptedJobs', id);
+  console.log('Im here in getAcceptedJobs');
   const getAccepted =
     "SELECT * FROM jobs INNER JOIN choices ON jobs.job_id = choices.job_id WHERE choices.user_id = $1 AND choices.status = 'Y'";
   db.query(getAccepted, [id], (err, data) => {
     if (err) next(err);
     else {
-      console.log('data.rows', data.rows);
+      console.log('data.rows in getAcceptedJobs', data.rows);
       res.locals.userYesJobs = removeDuplicates(data.rows);
       return next();
     }

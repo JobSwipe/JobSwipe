@@ -9,7 +9,7 @@ router.get(
   '/retrieveSavedJobs/:id',
   jobsController.getAcceptedJobs,
   (req, res) => {
-    console.log('finished');
+    console.log('finished retrieving saved jobs');
     res.status(200).json({ savedJobs: res.locals.userYesJobs });
   }
 );
@@ -18,13 +18,13 @@ router.get(
   '/retrieveAllUnseenJobs/:id',
   jobsController.getAllJobs,
   (req, res) => {
-    console.log('finished');
+    console.log('finished retrieving unseen jobs');
     res.status(200).json({ allJobs: res.locals.allUnseenJobs });
   }
 );
 // SAVE JOB
 router.post('/addSavedJob', jobsController.addJob, (req, res) => {
-  console.log('added');
+  console.log('added a saved job');
   res.status(200).json('Job added');
 });
 
