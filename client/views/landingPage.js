@@ -61,7 +61,7 @@ export default function landingPage(props) {
 
     fetchData();
   }, []);
-  console.log('whats logged in', user.loggedIn);
+  console.log('whats logged in jobsss', jobs);
 
   return user.loggedIn ? (
     <Box
@@ -154,6 +154,7 @@ export default function landingPage(props) {
             </Text>
             */}
           {console.log('spoon', jobs[0])}
+          {/**
           {jobs.map((job) => {
             return (
               <Flex
@@ -171,6 +172,20 @@ export default function landingPage(props) {
               </Flex>
             );
           })}
+        */}
+          <Flex
+            direction="column"
+            align="center"
+            bg="white"
+            color="black"
+            width="700px"
+            borderRadius="8px"
+            padding="30px"
+            marginTop="100px"
+          >
+            <Heading>{jobs[0].title}</Heading>
+            <Text>{jobs[0].description}</Text>
+          </Flex>
         </Center>
         <Center pb="60px">
           <HStack spacing="50px">
