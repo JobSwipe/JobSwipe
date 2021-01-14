@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/userContext.js';
 import { Route, Redirect } from 'react-router-dom';
+import TinderCard from 'react-tinder-card';
 import axios from 'axios';
 import {
   Image,
@@ -49,16 +50,19 @@ export default function landingPage(props) {
   // setCookies
   console.log(user.name);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const result = await axios("http://localhost:3333/jobs/?",body);
-  //     console.log(result);
-  //     setJobs(result.data);
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` //_id:1
+      );
+      console.log(result.data.allJobs, 'this is the result from jobs');
+      setJobs(result.data.allJobs);
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
   console.log('whats logged in', user.loggedIn);
+
   return user.loggedIn ? (
     <Box
       bg="tomato"
@@ -117,17 +121,7 @@ export default function landingPage(props) {
       </Box>
       <Container maxW="max" maxH="max">
         <Center pt="20px" pb="40px">
-          <Flex
-            direction="column"
-            align="center"
-            bg="white"
-            color="black"
-            width="700px"
-            borderRadius="8px"
-            padding="30px"
-            marginTop="100px"
-          >
-            <Heading>Software enginner</Heading>
+          {/*<Heading>Software enginner</Heading>
 
             <Text>J.P. Morgan</Text>
             <Text>
@@ -158,7 +152,25 @@ export default function landingPage(props) {
               position on JPMC Careers website job # 210052698. I look forward
               to speaking with you soon!
             </Text>
-          </Flex>
+            */}
+          {console.log('spoon', jobs[0])}
+          {jobs.map((job) => {
+            return (
+              <Flex
+                direction="column"
+                align="center"
+                bg="white"
+                color="black"
+                width="700px"
+                borderRadius="8px"
+                padding="30px"
+                marginTop="100px"
+              >
+                <Heading>{job.title}</Heading>
+                <Text>{job.description}</Text>
+              </Flex>
+            );
+          })}
         </Center>
         <Center pb="60px">
           <HStack spacing="50px">
