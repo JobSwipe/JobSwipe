@@ -55,36 +55,22 @@ async function populateDb() {
       .then((res) => res.json())
       .then((data) => {
         data.results.forEach((job) => {
-          let exist = false;
-          // make a query for that specific jsonId if it does not exist
-          db.query(
-            'SELECT * FROM jobs WHERE jsonid = $1',
-            [job.id],
-            (err, response) => {
-              if (err) console.log(err);
-              else if (response.rows.length) exist = true;
-            }
-          );
-          // add the job to the table
-          console.log('exist', exist);
-          if (!exist) {
-            const addJob = `INSERT INTO jobs (title, description, url, jsonid, location, salary)
+          const addJob = `INSERT INTO jobs (title, description, url, jsonid, location, salary)
             VALUES ($1, $2, $3, $4, $5, $6) RETURNING job_id`;
-            const values = [
-              job.title,
-              job.description,
-              job.redirect_url,
-              job.id,
-              job.location.display_name,
-              job.salary_min,
-            ];
-            db.query(addJob, values, (err, response) => {
-              if (err) console.log(err);
-              else {
-                console.log('response.rows', response.rows);
-              }
-            });
-          }
+          const values = [
+            job.title,
+            job.description,
+            job.redirect_url,
+            job.id,
+            job.location.display_name,
+            job.salary_min,
+          ];
+          db.query(addJob, values, (err, response) => {
+            if (err) console.log(err);
+            else {
+              console.log('response.rows', response.rows);
+            }
+          });
         });
       });
   } catch (error) {

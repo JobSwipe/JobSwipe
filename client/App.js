@@ -1,14 +1,15 @@
 import React, { Suspense, useState, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
 import LoginPage from './views/login.js';
 import savedJobs from './views/savedJobs.js';
-import { Button } from '@chakra-ui/react';
 import landingPage from './views/landingPage.js';
 import { UserContext } from './context/userContext.js';
+
 function App() {
   // check if cookies exists: if exist, update the auth to true
   const [user, setUser] = useState({
-    _id: 1,
+    _id: 2,
     name: 'Jiaxin',
     loggedIn: true,
   });

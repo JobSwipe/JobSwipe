@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { UserContext } from '../context/userContext.js';
 import { Route, Redirect } from 'react-router-dom';
 import TinderCard from 'react-tinder-card';
 import axios from 'axios';
@@ -32,10 +31,14 @@ import {
   MenuIcon,
   MenuCommand,
   MenuDivider,
+  Icon,
+  Link,
 } from '@chakra-ui/react';
 import { FaUserNinja } from 'react-icons/fa';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { Icon } from '@chakra-ui/react';
+
+import { UserContext } from '../context/userContext.js';
+
 export default function landingPage(props) {
   const toast = useToast();
   const defaultState = {
@@ -49,11 +52,11 @@ export default function landingPage(props) {
   // console.log('what is props', props);
   // setCookies
   console.log(user.name);
-
+  console.log(user._id);
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios(
-        `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` //_id:1
+        `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` // _id:2
       );
       console.log(result.data.allJobs, 'this is the result from jobs');
       setJobs(result.data.allJobs);
@@ -61,8 +64,36 @@ export default function landingPage(props) {
 
     fetchData();
   }, []);
+
   console.log('whats logged in', user.loggedIn);
 
+  function swipe(e) {
+    e.preventDefault();
+    console.log('clicked on', e.target.id); // YES or NO
+
+    // request to add job as YES/NO status
+    const fetchAddJob = async () => {
+      const result = await axios({
+        url: `http://localhost:3333/jobs/addSavedJob`,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          user_id: user._id,
+          status: e.target.id,
+          job_id: jobs[0].job_id,
+        },
+      });
+    };
+
+    fetchAddJob();
+    const job = jobs.shift();
+    const newJobs = jobs.map((nextJob) => nextJob);
+    console.log('length', jobs.length);
+    setJobs(newJobs);
+    console.log('job swiped', job);
+  }
   return user.loggedIn ? (
     <Box
       bg="tomato"
@@ -121,7 +152,7 @@ export default function landingPage(props) {
       </Box>
       <Container maxW="max" maxH="max">
         <Center pt="20px" pb="40px">
-          {/*<Heading>Software enginner</Heading>
+          {/* <Heading>Software enginner</Heading>
 
             <Text>J.P. Morgan</Text>
             <Text>
@@ -153,28 +184,37 @@ export default function landingPage(props) {
               to speaking with you soon!
             </Text>
             */}
-          {console.log('spoon', jobs[0])}
-          {jobs.map((job) => {
-            return (
-              <Flex
-                direction="column"
-                align="center"
-                bg="white"
-                color="black"
-                width="700px"
-                borderRadius="8px"
-                padding="30px"
-                marginTop="100px"
-              >
-                <Heading>{job.title}</Heading>
-                <Text>{job.description}</Text>
-              </Flex>
-            );
+          {console.log('spoon', jobs[1])}
+
+          {jobs.map((job, i) => {
+            if (i === 0)
+              return (
+                <Flex
+                  key={`key${i}`}
+                  direction="column"
+                  align="center"
+                  bg="white"
+                  color="black"
+                  width="700px"
+                  borderRadius="8px"
+                  padding="30px"
+                  marginTop="100px"
+                >
+                  <Heading>{job.title}</Heading>
+                  <Text
+                    dangerouslySetInnerHTML={{ __html: `${job.description}` }}
+                  />
+                  <Link color="teal.500" href={job.url} isExternal="true">
+                    Click here to get more information...
+                  </Link>
+                </Flex>
+              );
           })}
         </Center>
         <Center pb="60px">
           <HStack spacing="50px">
             <Button
+              id="N"
               variant="solid"
               size="lg"
               style={{
@@ -184,10 +224,12 @@ export default function landingPage(props) {
                 width: '200px',
                 fontSize: '100px',
               }}
+              onClick={swipe}
             >
               ❌
             </Button>{' '}
             <Button
+              id="Y"
               variant="solid"
               size="lg"
               style={{
@@ -197,6 +239,7 @@ export default function landingPage(props) {
                 width: '200px',
                 fontSize: '100px',
               }}
+              onClick={swipe}
             >
               ✔️
             </Button>

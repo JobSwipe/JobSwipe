@@ -29,6 +29,7 @@ jobsController.getAllJobs = (req, res, next) => {
 // add a job to the choices table as YES or NO
 jobsController.addJob = (req, res, next) => {
   const { user_id, status, job_id } = req.body;
+  console.log('user_id', user_id);
   console.log(user_id, status, job_id);
   const insertJob =
     'INSERT INTO choices (status, job_id, user_id) VALUES ($1, $2, $3)';
@@ -54,4 +55,5 @@ jobsController.getAcceptedJobs = (req, res, next) => {
   });
 };
 // SELECT * FROM jobs INNER JOIN choices ON jobs.job_id = choices.job_id WHERE choices.user_id = 2 AND choices.status = 'Y'
+
 module.exports = jobsController;
