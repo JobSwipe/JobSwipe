@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../context/userContext.js';
 import { Route, Redirect } from 'react-router-dom';
-// import axios
+import TinderCard from 'react-tinder-card';
+import axios from 'axios';
 import {
   Image,
   Box,
@@ -36,25 +37,33 @@ import { FaUserNinja } from 'react-icons/fa';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { Icon } from '@chakra-ui/react';
 export default function landingPage(props) {
+  const toast = useToast();
   const defaultState = {
     auth: true,
     user: {},
   };
   const [state, setState] = useState(defaultState);
+  const [jobs, setJobs] = useState([]);
   const { user, setUser } = useContext(UserContext);
+
   // console.log('what is props', props);
   // setCookies
   console.log(user.name);
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const result = await axios("http://localhost:333/jobs/?????");
-  //     console.log(result);
-  //     setQuestions(result.data);
-  //   };
 
-  //   fetchData();
-  // }, []);
-  return state.auth ? (
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios(
+        `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` //_id:1
+      );
+      console.log(result.data.allJobs, 'this is the result from jobs');
+      setJobs(result.data.allJobs);
+    };
+
+    fetchData();
+  }, []);
+  console.log('whats logged in', user.loggedIn);
+
+  return user.loggedIn ? (
     <Box
       bg="tomato"
       w="100%"
@@ -80,15 +89,31 @@ export default function landingPage(props) {
             user
           </MenuButton>
           <MenuList>
-            <MenuItem color="tomato">
+            <MenuItem
+              color="tomato"
+              onClick={() => {
+                props.history.push(`/savedJobs`);
+              }}
+            >
               <Text fontWeight="bold">Saved Jobs</Text>
             </MenuItem>
             <MenuItem color="tomato">
               <Text fontWeight="bold">Applied Jobs</Text>
             </MenuItem>
 
-            <MenuItem color="tomato">
-              {' '}
+            <MenuItem
+              color="tomato"
+              onClick={() => {
+                setUser({});
+                toast({
+                  title: 'Logged out!',
+                  description: `You have logged out of your account.`,
+                  status: 'success',
+                  duration: 5000,
+                  isClosable: true,
+                });
+              }}
+            >
               <Text fontWeight="bold">Log Out</Text>
             </MenuItem>
           </MenuList>
@@ -96,17 +121,7 @@ export default function landingPage(props) {
       </Box>
       <Container maxW="max" maxH="max">
         <Center pt="20px" pb="40px">
-          <Flex
-            direction="column"
-            align="center"
-            bg="white"
-            color="black"
-            width="700px"
-            borderRadius="8px"
-            padding="30px"
-            marginTop="100px"
-          >
-            <Heading>Software enginner</Heading>
+          {/*<Heading>Software enginner</Heading>
 
             <Text>J.P. Morgan</Text>
             <Text>
@@ -137,7 +152,25 @@ export default function landingPage(props) {
               position on JPMC Careers website job # 210052698. I look forward
               to speaking with you soon!
             </Text>
-          </Flex>
+            */}
+          {console.log('spoon', jobs[0])}
+          {jobs.map((job) => {
+            return (
+              <Flex
+                direction="column"
+                align="center"
+                bg="white"
+                color="black"
+                width="700px"
+                borderRadius="8px"
+                padding="30px"
+                marginTop="100px"
+              >
+                <Heading>{job.title}</Heading>
+                <Text>{job.description}</Text>
+              </Flex>
+            );
+          })}
         </Center>
         <Center pb="60px">
           <HStack spacing="50px">
