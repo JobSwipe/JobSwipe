@@ -1,18 +1,18 @@
-import React, { Suspense, useState, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import LoginPage from './views/login.js';
-import savedJobs from './views/savedJobs.js';
-import { Button } from '@chakra-ui/react';
-import landingPage from './views/landingPage.js';
-import { UserContext } from './context/userContext.js';
+import React, { Suspense, useState, useEffect } from "react";
+import { Route, Switch } from "react-router-dom";
+import LoginPage from "./views/login.js";
+import savedJobs from "./views/savedJobs.js";
+import { Button } from "@chakra-ui/react";
+import landingPage from "./views/landingPage.js";
+import { UserContext } from "./context/userContext.js";
 function App() {
   // check if cookies exists: if exist, update the auth to true
   const [user, setUser] = useState({
-    _id: 1,
-    name: 'Jiaxin',
+    _id: 2,
+    name: "Jiaxin",
     loggedIn: true,
   });
-
+  //'/signin'
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div>
@@ -28,12 +28,12 @@ function App() {
       </div>
       <div
         style={{
-          height: '80px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '1rem',
+          height: "80px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "1rem",
         }}
       >
         <p>

@@ -1,6 +1,7 @@
-import React, { useState, useEffct, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router";
 import { UserContext } from "../context/userContext.js";
+import axios from "axios";
 import {
   Image,
   Box,
@@ -46,71 +47,26 @@ export default function savedJobs(props) {
   console.log(user);
   const [savedJobs, setSavedJobs] = useState([
     {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
-    },
-
-    {
-      Position: "software engineer",
-      Description:
-        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
-      Location: "Newport, NJ",
-      Link: "https://google.com",
+      Position: "",
+      Description: "",
+      Location: "",
+      Link: "",
     },
   ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log("fetcheing.................");
+      const result = await axios(
+        `http://localhost:3333/jobs/retrieveSavedJobs/${user._id}` //_id:1
+      );
+      console.log(result.data, "this is the result from jobs");
+
+      setSavedJobs(result.data.savedJobs);
+    };
+
+    fetchData();
+  }, []);
+  console.log("whats saved jobs", savedJobs[0]); // error: undefined
   // axios.get => [{}]
   const Cards = ({ Position, Description, Location, LK }) => {
     return (
@@ -148,10 +104,10 @@ export default function savedJobs(props) {
     savedJobList.push(
       <Cards
         key={`jobs${i}`}
-        Position={savedJobs[i].Position}
-        Description={savedJobs[i].Description}
-        Location={savedJobs[i].Location}
-        LK={savedJobs[i].Link}
+        Position={savedJobs[i].title}
+        Description={savedJobs[i].description}
+        Location={savedJobs[i].location}
+        LK={savedJobs[i].url}
       />
     );
   }
