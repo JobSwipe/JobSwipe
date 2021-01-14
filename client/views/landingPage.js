@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { UserContext } from '../context/userContext.js';
-import { Route, Redirect } from 'react-router-dom';
-import TinderCard from 'react-tinder-card';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../context/userContext.js";
+import { Route, Redirect } from "react-router-dom";
+import TinderCard from "react-tinder-card";
+import axios from "axios";
 import {
   Image,
   Box,
   Heading,
+  Link,
   Flex,
   Text,
   Button,
@@ -32,15 +33,15 @@ import {
   MenuIcon,
   MenuCommand,
   MenuDivider,
-} from '@chakra-ui/react';
-import { FaUserNinja } from 'react-icons/fa';
-import { ChevronDownIcon } from '@chakra-ui/icons';
-import { Icon } from '@chakra-ui/react';
+} from "@chakra-ui/react";
+import { FaUserNinja } from "react-icons/fa";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import { Icon } from "@chakra-ui/react";
 export default function landingPage(props) {
   const toast = useToast();
   const defaultState = {
     auth: true,
-    user: {},
+    users: {},
   };
   const [state, setState] = useState(defaultState);
   const [jobs, setJobs] = useState([]);
@@ -52,24 +53,39 @@ export default function landingPage(props) {
 
   useEffect(() => {
     const fetchData = async () => {
+      console.log("fetcheing.................");
       const result = await axios(
         `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` //_id:1
       );
-      console.log(result.data.allJobs, 'this is the result from jobs');
+      console.log(result.data.allJobs, "this is the result from jobs");
+
       setJobs(result.data.allJobs);
     };
 
     fetchData();
   }, []);
-  console.log('whats logged in jobsss', jobs);
-
+  console.log("whats logged in", jobs[0]); // error: undefined
+  // update state for jobs after swipe
+  const swipe = () => {
+    //jobs.shift();
+    console.log("what shift away", jobs.shift());
+    setJobs([...jobs]);
+  };
+  // save to choice table
+  const saveToChoice = (userId, status, job_id) => {
+    axios.post("http://localhost:3333/jobs/addSavedJob", {
+      user_id: userId,
+      status: status,
+      job_id: job_id,
+    });
+  };
   return user.loggedIn ? (
     <Box
       bg="tomato"
       w="100%"
       p={4}
       color="white"
-      style={{ position: 'relative' }}
+      style={{ position: "relative", minHeight: "1100px" }}
     >
       <Center>
         <Heading as="h1" size="4xl" pt={4}>
@@ -77,14 +93,14 @@ export default function landingPage(props) {
         </Heading>
       </Center>
 
-      <Box style={{ position: 'absolute', top: '30px', right: '10px' }}>
+      <Box style={{ position: "absolute", top: "30px", right: "10px" }}>
         <Menu>
           <MenuButton
             as={Button}
             colorScheme="teal"
             rightIcon={<ChevronDownIcon />}
           >
-            {' '}
+            {" "}
             <Icon as={FaUserNinja} w={10} h={10} />
             user
           </MenuButton>
@@ -106,9 +122,9 @@ export default function landingPage(props) {
               onClick={() => {
                 setUser({});
                 toast({
-                  title: 'Logged out!',
+                  title: "Logged out!",
                   description: `You have logged out of your account.`,
-                  status: 'success',
+                  status: "success",
                   duration: 5000,
                   isClosable: true,
                 });
@@ -122,7 +138,6 @@ export default function landingPage(props) {
       <Container maxW="max" maxH="max">
         <Center pt="20px" pb="40px">
           {/*<Heading>Software enginner</Heading>
-
             <Text>J.P. Morgan</Text>
             <Text>
               Description: As an experienced Java Development Lead or Software
@@ -153,39 +168,33 @@ export default function landingPage(props) {
               to speaking with you soon!
             </Text>
             */}
-          {console.log('spoon', jobs[0])}
-          {/**
-          {jobs.map((job) => {
-            return (
-              <Flex
-                direction="column"
-                align="center"
-                bg="white"
-                color="black"
-                width="700px"
-                borderRadius="8px"
-                padding="30px"
-                marginTop="100px"
-              >
-                <Heading>{job.title}</Heading>
-                <Text>{job.description}</Text>
-              </Flex>
-            );
-          })}
-        */}
-          <Flex
-            direction="column"
-            align="center"
-            bg="white"
-            color="black"
-            width="700px"
-            borderRadius="8px"
-            padding="30px"
-            marginTop="100px"
-          >
-            <Heading>{jobs[0].title}</Heading>
-            <Text>{jobs[0].description}</Text>
-          </Flex>
+
+          {console.log("spoon", jobs[12])}
+          {console.log("hahahah")}
+          {
+            jobs.map((job) => {
+              return (
+                <Flex
+                  direction="column"
+                  align="center"
+                  bg="white"
+                  color="black"
+                  width="700px"
+                  borderRadius="8px"
+                  padding="30px"
+                  marginTop="100px"
+                  minHeight="350px"
+                >
+                  <Heading>{job.title}</Heading>
+                  <Text as="mark">Salary:{job.salary}</Text>
+                  <Text>{job.description}</Text>
+                  <Link color="teal.700" href={job.url}>
+                    Apply here!
+                  </Link>
+                </Flex>
+              );
+            })[0]
+          }
         </Center>
         <Center pb="60px">
           <HStack spacing="50px">
@@ -193,24 +202,39 @@ export default function landingPage(props) {
               variant="solid"
               size="lg"
               style={{
-                borderRadius: '50%',
-                color: 'black',
-                height: '200px',
-                width: '200px',
-                fontSize: '100px',
+                borderRadius: "50%",
+                color: "black",
+                height: "200px",
+                width: "200px",
+                fontSize: "100px",
+              }}
+              onClick={() => {
+                console.log("click");
+                console.log(jobs);
+                swipe();
               }}
             >
               ❌
-            </Button>{' '}
+            </Button>{" "}
             <Button
               variant="solid"
               size="lg"
               style={{
-                borderRadius: '50%',
-                color: 'black',
-                height: '200px',
-                width: '200px',
-                fontSize: '100px',
+                borderRadius: "50%",
+                color: "black",
+                height: "200px",
+                width: "200px",
+                fontSize: "100px",
+              }}
+              onClick={() => {
+                console.log("click");
+                console.log(jobs);
+                saveToChoice(
+                  JSON.stringify(user._id),
+                  "Y",
+                  JSON.stringify(jobs[0].job_id)
+                );
+                swipe();
               }}
             >
               ✔️

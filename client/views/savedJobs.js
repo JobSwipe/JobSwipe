@@ -1,5 +1,6 @@
-import React, { useState, useEffct, useContext } from 'react';
-import { UserContext } from '../context/userContext.js';
+import React, { useState, useEffct, useContext } from "react";
+import { Redirect } from "react-router";
+import { UserContext } from "../context/userContext.js";
 import {
   Image,
   Box,
@@ -34,10 +35,10 @@ import {
   MenuIcon,
   MenuCommand,
   MenuDivider,
-} from '@chakra-ui/react';
-import { FaUserNinja } from 'react-icons/fa';
-import { Icon } from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import { FaUserNinja } from "react-icons/fa";
+import { Icon } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 export default function savedJobs(props) {
   const toast = useToast();
   const { user, setUser } = useContext(UserContext);
@@ -45,69 +46,69 @@ export default function savedJobs(props) {
   console.log(user);
   const [savedJobs, setSavedJobs] = useState([
     {
-      Position: 'software engineer',
+      Position: "software engineer",
       Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
     },
     {
-      Position: 'software engineer',
+      Position: "software engineer",
       Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
     },
     {
-      Position: 'software engineer',
+      Position: "software engineer",
       Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
     },
     {
-      Position: 'software engineer',
+      Position: "software engineer",
       Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
     },
     {
-      Position: 'software engineer',
+      Position: "software engineer",
       Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
     },
     {
-      Position: 'software engineer',
+      Position: "software engineer",
       Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
-    },
-
-    {
-      Position: 'software engineer',
-      Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
-    },
-    {
-      Position: 'software engineer',
-      Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
     },
 
     {
-      Position: 'software engineer',
+      Position: "software engineer",
       Description:
-        'fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa',
-      Location: 'Newport, NJ',
-      Link: 'https://google.com',
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
+    },
+    {
+      Position: "software engineer",
+      Description:
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
+    },
+
+    {
+      Position: "software engineer",
+      Description:
+        "fdsafjdsoafhd fds afdhsaofhdsaofdhsiaofhdsoafhdsaofhdosafhodsahfsodafhsdoafhdsoahfdsoahfdsoa",
+      Location: "Newport, NJ",
+      Link: "https://google.com",
     },
   ]);
   // axios.get => [{}]
@@ -132,7 +133,7 @@ export default function savedJobs(props) {
             <Box w="100%">Description: {Description}</Box>
             <Box w="100%">Location: {Location}</Box>
             <Box w="100%" pb="20px">
-              Link:{' '}
+              Link:{" "}
               <Link color="teal.700" href={LK}>
                 {LK}
               </Link>
@@ -162,7 +163,7 @@ export default function savedJobs(props) {
       h="100%"
       p={4}
       color="white"
-      style={{ position: 'relative' }}
+      style={{ position: "relative" }}
     >
       <Center>
         <Heading as="h1" size="4xl" pt={4}>
@@ -184,18 +185,21 @@ export default function savedJobs(props) {
             borderColor="green.500"
             color="white"
             onClick={() => {
-              props.history.push('/');
+              // TODO: prevent reload and clearify my state
+              props.history.push("/");
+              // return <Redirect push to="/" />;
+              // window.location = "/";
               toast({
-                title: 'Keep Swiping!',
+                title: "Keep Swiping!",
                 description: `Because you did not come this far just to come this far`,
-                status: 'success',
+                status: "success",
                 duration: 5000,
                 isClosable: true,
               });
             }}
           >
             Go Swipe
-          </Button>{' '}
+          </Button>{" "}
         </Center>
       </Container>
     </Box>
