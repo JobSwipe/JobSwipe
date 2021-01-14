@@ -34,11 +34,10 @@ router.get('/google', passport.authenticate("google", {
 // we echange this code for profile info
 // cb route for google to redirect to
 router.get("/google/redirect", passport.authenticate('google'), (req, res) => {
-  // res.send(req.user);
-  console.log('req.user in auth-routes', req.user.rows[0]);
-  res.json(req.user.rows[0])
-  // console.log("res.locals.user in auth-routes", res.locals.user)
-  res.redirect('http://localhost:8080/')
+  res.cookie("userId", req.user.rows[0].user_id).cookie("userName", req.user.rows[0].username).redirect("http://localhost:8080")
+  // console.log('req.user in auth-routes', req.user.rows[0]);
+  
+  
 });
 // hi guys can you take me baaaaaack
 // pleaaassssseeee. do you want us to come back there?
