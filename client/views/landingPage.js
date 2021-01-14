@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import TinderCard from 'react-tinder-card';
-import axios from 'axios';
+import React, { useState, useEffect, useContext } from "react";
+import { Route, Redirect } from "react-router-dom";
+import TinderCard from "react-tinder-card";
+import axios from "axios";
 import {
   Image,
   Box,
@@ -33,17 +33,17 @@ import {
   MenuDivider,
   Icon,
   Link,
-} from '@chakra-ui/react';
-import { FaUserNinja } from 'react-icons/fa';
-import { ChevronDownIcon } from '@chakra-ui/icons';
+} from "@chakra-ui/react";
+import { FaUserNinja } from "react-icons/fa";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
-import { UserContext } from '../context/userContext.js';
+import { UserContext } from "../context/userContext.js";
 
 export default function landingPage(props) {
   const toast = useToast();
   const defaultState = {
     auth: true,
-    user: {},
+    users: {},
   };
   const [state, setState] = useState(defaultState);
   const [jobs, setJobs] = useState([]);
@@ -55,29 +55,46 @@ export default function landingPage(props) {
   console.log(user._id);
   useEffect(() => {
     const fetchData = async () => {
+      console.log("fetcheing.................");
       const result = await axios(
         `http://localhost:3333/jobs/retrieveAllUnseenJobs/${user._id}` // _id:2
       );
-      console.log(result.data.allJobs, 'this is the result from jobs');
+      console.log(result.data.allJobs, "this is the result from jobs");
+
       setJobs(result.data.allJobs);
     };
 
     fetchData();
   }, []);
+  // console.log("whats logged in", jobs[0]); // error: undefined
+  // // update state for jobs after swipe
+  // const swipe = () => {
+  //   //jobs.shift();
+  //   console.log("what shift away", jobs.shift());
+  //   setJobs([...jobs]);
+  // };
+  // // save to choice table
+  // const saveToChoice = (userId, status, job_id) => {
+  //   axios.post("http://localhost:3333/jobs/addSavedJob", {
+  //     user_id: userId,
+  //     status: status,
+  //     job_id: job_id,
+  //   });
+  // };
 
-  console.log('whats logged in', user.loggedIn);
+  console.log("whats logged in", user.loggedIn);
 
   function swipe(e) {
     e.preventDefault();
-    console.log('clicked on', e.target.id); // YES or NO
+    console.log("clicked on", e.target.id); // YES or NO
 
     // request to add job as YES/NO status
     const fetchAddJob = async () => {
       const result = await axios({
         url: `http://localhost:3333/jobs/addSavedJob`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         data: {
           user_id: user._id,
@@ -90,9 +107,9 @@ export default function landingPage(props) {
     fetchAddJob();
     const job = jobs.shift();
     const newJobs = jobs.map((nextJob) => nextJob);
-    console.log('length', jobs.length);
+    console.log("length", jobs.length);
     setJobs(newJobs);
-    console.log('job swiped', job);
+    console.log("job swiped", job);
   }
   return user.loggedIn ? (
     <Box
@@ -100,7 +117,7 @@ export default function landingPage(props) {
       w="100%"
       p={4}
       color="white"
-      style={{ position: 'relative' }}
+      style={{ position: "relative", minHeight: "1100px" }}
     >
       <Center>
         <Heading as="h1" size="4xl" pt={4}>
@@ -108,14 +125,14 @@ export default function landingPage(props) {
         </Heading>
       </Center>
 
-      <Box style={{ position: 'absolute', top: '30px', right: '10px' }}>
+      <Box style={{ position: "absolute", top: "30px", right: "10px" }}>
         <Menu>
           <MenuButton
             as={Button}
             colorScheme="teal"
             rightIcon={<ChevronDownIcon />}
           >
-            {' '}
+            {" "}
             <Icon as={FaUserNinja} w={10} h={10} />
             user
           </MenuButton>
@@ -137,9 +154,9 @@ export default function landingPage(props) {
               onClick={() => {
                 setUser({});
                 toast({
-                  title: 'Logged out!',
+                  title: "Logged out!",
                   description: `You have logged out of your account.`,
-                  status: 'success',
+                  status: "success",
                   duration: 5000,
                   isClosable: true,
                 });
@@ -184,7 +201,7 @@ export default function landingPage(props) {
               to speaking with you soon!
             </Text>
             */}
-          {console.log('spoon', jobs[1])}
+          {console.log("spoon", jobs[1])}
 
           {jobs.map((job, i) => {
             if (i === 0)
@@ -201,6 +218,7 @@ export default function landingPage(props) {
                   marginTop="100px"
                 >
                   <Heading>{job.title}</Heading>
+                  <Text as="mark">Salary: {job.salary}</Text>
                   <Text
                     dangerouslySetInnerHTML={{ __html: `${job.description}` }}
                   />
@@ -218,26 +236,41 @@ export default function landingPage(props) {
               variant="solid"
               size="lg"
               style={{
-                borderRadius: '50%',
-                color: 'black',
-                height: '200px',
-                width: '200px',
-                fontSize: '100px',
+                borderRadius: "50%",
+                color: "black",
+                height: "200px",
+                width: "200px",
+                fontSize: "100px",
+              }}
+              onClick={() => {
+                console.log("click");
+                console.log(jobs);
+                swipe();
               }}
               onClick={swipe}
             >
               ❌
-            </Button>{' '}
+            </Button>{" "}
             <Button
               id="Y"
               variant="solid"
               size="lg"
               style={{
-                borderRadius: '50%',
-                color: 'black',
-                height: '200px',
-                width: '200px',
-                fontSize: '100px',
+                borderRadius: "50%",
+                color: "black",
+                height: "200px",
+                width: "200px",
+                fontSize: "100px",
+              }}
+              onClick={() => {
+                console.log("click");
+                console.log(jobs);
+                saveToChoice(
+                  JSON.stringify(user._id),
+                  "Y",
+                  JSON.stringify(jobs[0].job_id)
+                );
+                swipe();
               }}
               onClick={swipe}
             >
