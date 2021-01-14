@@ -1,4 +1,4 @@
-const db = require('../dbModels.js');
+const db = require("../dbModels.js");
 
 function removeDuplicates(array) {
   const jsonIds = [];
@@ -15,40 +15,43 @@ const jobsController = {};
 jobsController.getAllJobs = (req, res, next) => {
   const { id } = req.params;
   const getJobs =
-    'SELECT * FROM jobs WHERE NOT EXISTS (SELECT 1 FROM choices WHERE jobs.job_id = choices.job_id AND choices.user_id =$1)';
+    "SELECT * FROM jobs WHERE NOT EXISTS (SELECT 1 FROM choices WHERE jobs.job_id = choices.job_id AND choices.user_id =$1)";
   db.query(getJobs, [id], (err, data) => {
     if (err) next(err);
     else {
       console.log('data.rows in getAllJobs', data.rows.length);
       res.locals.allUnseenJobs = removeDuplicates(data.rows);
-      console.log('allUnseenJobs', res.locals.allUnseenJobs.length);
+      console.log("allUnseenJobs", res.locals.allUnseenJobs.length);
       return next();
     }
   });
 };
 // add a job to the choices table as YES or NO
 jobsController.addJob = (req, res, next) => {
+  console.log("hiiiii im in add jobsssss");
   const { user_id, status, job_id } = req.body;
-  console.log('user_id', user_id);
+  console.log("user_id", user_id);
   console.log(user_id, status, job_id);
   const insertJob =
-    'INSERT INTO choices (status, job_id, user_id) VALUES ($1, $2, $3)';
+    "INSERT INTO choices (status, job_id, user_id) VALUES ($1, $2, $3)";
   db.query(insertJob, [status, job_id, user_id], (err, data) => {
-    if (err) next(err);
-    else return next();
+    if (err) {
+      console.log("whats error", err);
+      next(err);
+    } else return next();
   });
 };
 // request all jobs that have a YES status for a specific user
 jobsController.getAcceptedJobs = (req, res, next) => {
   const { id } = req.params;
-  console.log('id in getAcceptedJobs', id);
-  console.log('Im here in getAcceptedJobs');
+  console.log("id", id);
+  console.log("Im here");
   const getAccepted =
     "SELECT * FROM jobs INNER JOIN choices ON jobs.job_id = choices.job_id WHERE choices.user_id = $1 AND choices.status = 'Y'";
   db.query(getAccepted, [id], (err, data) => {
     if (err) next(err);
     else {
-      console.log('data.rows in getAcceptedJobs', data.rows);
+      console.log("data.rows", data.rows);
       res.locals.userYesJobs = removeDuplicates(data.rows);
       return next();
     }

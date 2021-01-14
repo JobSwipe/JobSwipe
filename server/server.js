@@ -1,19 +1,9 @@
-const express = require('express');
-const authRoutes = require('./routes/auth-routes');
-const profileRoutes = require('./routes/profile-routes');
+const express = require("express");
+const path = require("path");
+const fetch = require("node-fetch");
+const db = require("./dbModels.js");
+const cors = require("cors");
 const app = express();
-const passportSetup = require('../config/passport-setup')
-const path = require('path');
-const bodyParser = require("body-parser");
-const passport = require('passport');
-const keys = require('../config/keys');
-const queryController = require("./controllers/queryController");
-const cookieSession = require('cookie-session');
-const cookieParser = require('cookie-parser');
-const jobsRouter = require('./routes/jobs');
-const fetch = require('node-fetch');
-const db = require('./dbModels.js');
-const cors = require('cors');
 const PORT = 3333;
 
 // handle parsing request body and cookies
@@ -21,6 +11,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 // const userRouter = require('./routes/user');
+const jobsRouter = require("./routes/jobs");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -50,7 +41,7 @@ app.use('/profile', profileRoutes);
 async function populateDb() {
   try {
     await fetch(
-      'https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=159d625a&app_key=2b033222da664bdad70008618275b412&results_per_page=50&what=javascript&where=cupertino&distance=20&sort_by=date&salary_min=90000'
+      "https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=159d625a&app_key=2b033222da664bdad70008618275b412&results_per_page=50&what=javascript&where=cupertino&distance=20&sort_by=date&salary_min=90000"
     )
       .then((res) => res.json())
       .then((data) => {
@@ -68,33 +59,32 @@ async function populateDb() {
           db.query(addJob, values, (err, response) => {
             if (err) console.log(err);
             else {
-              console.log('response.rows', response.rows);
+              console.log("response.rows", response.rows);
             }
           });
         });
       });
   } catch (error) {
-    console.log('error', error);
+    console.log("error", error);
   }
 }
 // commented out since no data required for the moment
 // populateDb();
 
 //* GET JOBS FROM API
-app.use('/jobs', jobsRouter);
+app.use("/jobs", jobsRouter);
 // app.use('/user', userRouter); // login in (save the users)//auth(res.cookies with jwt)//logout
-app.get('/*', (req, res) => {
-  // console.log('you are in wildcard')
-  res.sendFile(path.join(__dirname, '../client/index.html'));
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/index.html"));
 });
 
 // error handling
 app.use((err, req, res, next) => {
   const defaultErr = {
     log:
-      'Express error handler caught unknown middleware error (default error handler)',
+      "Express error handler caught unknown middleware error (default error handler)",
     status: 400,
-    message: { err: 'An error occurred' },
+    message: { err: "An error occurred" },
   };
   const errorObj = { ...defaultErr, ...err };
   console.log(errorObj.log);
