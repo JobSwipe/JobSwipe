@@ -19,10 +19,9 @@ jobsController.getAllJobs = (req, res, next) => {
   db.query(getJobs, [id], (err, data) => {
     if (err) next(err);
     else {
-      console.log('data.rows', data.rows.length); //200
-      res.locals.allUnseenJobs = removeDuplicates(data.rows); //18
-      console.log('local all unseen jobs', res.locals.allUnseenJobs);
-      console.log('after remove', removeDuplicates(data.rows).length);
+      console.log('data.rows', data.rows.length);
+      res.locals.allUnseenJobs = removeDuplicates(data.rows);
+      console.log('allUnseenJobs', res.locals.allUnseenJobs.length);
       return next();
     }
   });

@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 async function populateDb() {
   try {
     await fetch(
-      'https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=1bb52756&app_key=1969ba3ac22c55e77c02d9563d19110e&what=javascript&where=19020&distance=50'
+      'https://api.adzuna.com/v1/api/jobs/us/search/1?app_id=159d625a&app_key=2b033222da664bdad70008618275b412&results_per_page=50&what=javascript&where=cupertino&distance=20&sort_by=date&salary_min=90000'
     )
       .then((res) => res.json())
       .then((data) => {
@@ -40,7 +40,7 @@ async function populateDb() {
               job.redirect_url,
               job.id,
               job.location.display_name,
-              job.salary_is_predicted,
+              job.salary_min,
             ];
             db.query(addJob, values, (err, response) => {
               if (err) console.log(err);
@@ -55,7 +55,7 @@ async function populateDb() {
     console.log('error', error);
   }
 }
-
+// commented out since no data required for the moment
 // populateDb();
 
 //* GET JOBS FROM API
