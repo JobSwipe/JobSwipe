@@ -18,7 +18,7 @@ const PORT = 3333;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-// const userRouter = require('./routes/user');
+const userRouter = require('./routes/user');
 const jobsRouter = require("./routes/jobs");
 app.use(cors());
 app.use(express.json());

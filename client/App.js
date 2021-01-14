@@ -37,10 +37,10 @@ function App() {
         }}
       >
         <p>
-          We are poor and young software engineers who have passion to help
+          We are poor and young software engineers who are passionate to help
           other engineers grow and find a job. Show some love by:
         </p>
-        <Button size="xs">Donate Us ❤️</Button>
+        <Button size="xs">Donate ❤️</Button>
       </div>
     </Suspense>
   );

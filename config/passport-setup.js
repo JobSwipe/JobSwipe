@@ -5,8 +5,6 @@ const fetch = require('node-fetch');
 const queryController = require("../server/controllers/queryController");
 const db = require("../server/dbModels");
 
-console.log('i am inside passport-setup')
-
 // import the keys file that you add to gitignore
 const keys = require('./keys');
 
@@ -24,7 +22,7 @@ passport.deserializeUser(async (id, done) => {
   // we want the SQL-created id of the user we query for
   console.log('deserializeUser user.id', id)
   const user = await db.query('SELECT * FROM users WHERE "user_id" = $1', [id])
-  console.log('our user inside deSERIAL is...', user.rows[0])
+  console.log('our user inside deSERIAL is...', user.rows)
   done(null, user.rows[0]);
 });
 

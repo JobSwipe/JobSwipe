@@ -17,10 +17,12 @@ router.get('/', authCheck, (req, res) => {
   // res.send(`you like turtles and you're logged in, this is your profile -- ${req.user.name}`);
   // res.send(console.log(req.user));
   // console.log('req.user in profile routes res.send', req);
-  res.render('profile', {
-    user: req.user,
+  console.log('req.user in profile routes', req.user)
+  res.json(req.user)
+  // res.render('profile', {
+  //   user: req.user,
 
-  });
+  // });
     
 });
 

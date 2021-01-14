@@ -36,9 +36,9 @@ router.get('/google', passport.authenticate("google", {
 router.get("/google/redirect", passport.authenticate('google'), (req, res) => {
   // res.send(req.user);
   console.log('req.user in auth-routes', req.user.rows[0]);
-  // res.locals.user = req.user
+  res.json(req.user.rows[0])
   // console.log("res.locals.user in auth-routes", res.locals.user)
-  res.redirect('http://localhost:3333/views/landingPage.js')
+  res.redirect('http://localhost:8080/')
 });
 // hi guys can you take me baaaaaack
 // pleaaassssseeee. do you want us to come back there?
