@@ -12,6 +12,7 @@ function App() {
     name: 'Jiaxin',
     loggedIn: true,
   });
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div>

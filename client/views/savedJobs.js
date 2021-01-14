@@ -38,8 +38,11 @@ import {
 import { FaUserNinja } from 'react-icons/fa';
 import { Icon } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-export default function savedJobs() {
+export default function savedJobs(props) {
+  const toast = useToast();
   const { user, setUser } = useContext(UserContext);
+
+  console.log(user);
   const [savedJobs, setSavedJobs] = useState([
     {
       Position: 'software engineer',
@@ -167,29 +170,6 @@ export default function savedJobs() {
         </Heading>
       </Center>
 
-      <Box style={{ position: 'absolute', top: '30px', right: '10px' }}>
-        <Menu>
-          <MenuButton
-            as={Button}
-            colorScheme="teal"
-            rightIcon={<ChevronDownIcon />}
-          >
-            {' '}
-            <Icon as={FaUserNinja} w={10} h={10} />
-            user
-          </MenuButton>
-          <MenuList>
-            <MenuItem color="tomato">
-              <Text fontWeight="bold">Applied Jobs</Text>
-            </MenuItem>
-
-            <MenuItem color="tomato">
-              {' '}
-              <Text fontWeight="bold">Log Out</Text>
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      </Box>
       <Container maxW="max" maxH="max">
         <Wrap pt="100px" pb="100px">
           {savedJobList}
@@ -203,6 +183,16 @@ export default function savedJobs() {
             colorScheme="teal"
             borderColor="green.500"
             color="white"
+            onClick={() => {
+              props.history.push('/');
+              toast({
+                title: 'Keep Swiping!',
+                description: `Because you did not come this far just to come this far`,
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+              });
+            }}
           >
             Go Swipe
           </Button>{' '}
